@@ -43,7 +43,9 @@ export default function Home() {
     return <Gauge className="h-6 w-6 text-primary" />;
   };
 
-  const lastUpdated = latestData?.timestamp ? format(new Date(latestData.timestamp), "PP, hh:mm:ss a") : "N/A";
+  const lastUpdated = (latestData?.timestamp && isValid(new Date(latestData.timestamp)))
+    ? format(new Date(latestData.timestamp), "PP, hh:mm:ss a")
+    : "N/A";
   
   const handleHighlight = (chart: string) => {
     setHighlightedChart(highlightedChart === chart ? null : chart);
