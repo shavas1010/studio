@@ -60,7 +60,10 @@ export function MultiBatteryDashboard() {
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                         <span>Battery 1 (Underflow)</span>
-                        {getSoCIcon(battery1.soc)}
+                        <div className="flex items-center gap-2">
+                          {isActive(1) && <Badge>Active</Badge>}
+                          {getSoCIcon(battery1.soc)}
+                        </div>
                     </CardTitle>
                     <CardDescription>{battery1.status}</CardDescription>
                 </CardHeader>
@@ -75,7 +78,10 @@ export function MultiBatteryDashboard() {
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                         <span>Battery 2 (Overflow)</span>
-                         {getSoCIcon(battery2.soc)}
+                        <div className="flex items-center gap-2">
+                          {isActive(2) && <Badge>Active</Badge>}
+                          {getSoCIcon(battery2.soc)}
+                        </div>
                     </CardTitle>
                     <CardDescription>{battery2.status}</CardDescription>
                 </CardHeader>
@@ -90,7 +96,10 @@ export function MultiBatteryDashboard() {
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                         <span>Battery 3 (Fault)</span>
-                         {getSoCIcon(battery3.soc)}
+                         <div className="flex items-center gap-2">
+                          {isActive(3) && <Badge>Active</Badge>}
+                          {getSoCIcon(battery3.soc)}
+                        </div>
                     </CardTitle>
                     <CardDescription>{battery3.status}</CardDescription>
                 </CardHeader>
