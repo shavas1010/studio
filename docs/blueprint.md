@@ -3,9 +3,9 @@
 ## Core Features:
 
 - Real-time Data Ingestion: Receive real-time microgrid data from ESP32 every 5 minutes.
-- Data Storage: Store microgrid data in Firebase Realtime Database with timestamp as the key.
+- Data Storage: Store microgrid data in Firebase Realtime Database with timestamp as the key. Includes handling of timestamp, output_current, output_voltage, input_current, input_voltage, battery_soc, charging_source, battery_charge, and efficiency
 - Data Visualization: Visualize real-time microgrid data on the frontend.
-- Efficiency Analysis Tool: Use AI as a tool to provide data-informed suggestions and analyses.
+- Efficiency Analysis Tool: Use AI as a tool to provide data-informed suggestions and analyses based on the data received.
 
 ## Style Guidelines:
 

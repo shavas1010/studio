@@ -1,3 +1,4 @@
+
 "use client";
 
 import { format } from "date-fns";
@@ -6,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import type { MicrogridData } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface DataChartProps {
   data: MicrogridData[];
@@ -13,9 +15,10 @@ interface DataChartProps {
   description: string;
   lines: { dataKey: keyof MicrogridData; stroke: string; name: string, icon?: React.ComponentType }[];
   loading?: boolean;
+  isHighlighted?: boolean;
 }
 
-export function DataChart({ data, title, description, lines, loading }: DataChartProps) {
+export function DataChart({ data, title, description, lines, loading, isHighlighted }: DataChartProps) {
   const chartConfig = lines.reduce((acc, line) => {
     acc[line.dataKey] = {
       label: line.name,
@@ -40,7 +43,7 @@ export function DataChart({ data, title, description, lines, loading }: DataChar
   }
   
   return (
-    <Card>
+    <Card className={cn("transition-all duration-300", isHighlighted && "ring-2 ring-primary shadow-lg")}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

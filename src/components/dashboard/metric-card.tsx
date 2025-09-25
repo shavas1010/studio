@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface MetricCardProps {
   title: string;
@@ -9,9 +10,10 @@ interface MetricCardProps {
   icon: React.ReactNode;
   description?: string;
   loading?: boolean;
+  onClick?: () => void;
 }
 
-export function MetricCard({ title, value, unit, icon, description, loading }: MetricCardProps) {
+export function MetricCard({ title, value, unit, icon, description, loading, onClick }: MetricCardProps) {
   if (loading) {
     return (
       <Card>
@@ -28,7 +30,13 @@ export function MetricCard({ title, value, unit, icon, description, loading }: M
   }
 
   return (
-    <Card>
+    <Card 
+      onClick={onClick} 
+      className={cn(
+        "transition-colors",
+        onClick && "cursor-pointer hover:bg-muted"
+      )}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         {icon}

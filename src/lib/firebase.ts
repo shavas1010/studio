@@ -7,7 +7,7 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getDatabase(app);
 
 // Check if the config is still using placeholder values
-const isConfigPlaceholder = Object.values(firebaseConfig).some(value => value.includes('YOUR_'));
+const isConfigPlaceholder = firebaseConfig.apiKey === "API_KEY";
 
 if (isConfigPlaceholder && typeof window !== 'undefined') {
   console.warn(`

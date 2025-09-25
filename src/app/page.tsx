@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from "react";
 import { useMicrogridData } from "@/hooks/use-microgrid-data";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { MetricCard } from "@/components/dashboard/metric-card";
@@ -12,6 +13,7 @@ import { format } from "date-fns";
 
 export default function Home() {
   const { data, latestData, loading, error } = useMicrogridData();
+  const [highlightedChart, setHighlightedChart] = useState<string | null>(null);
 
   const batteryStatusIcon = () => {
     if (!latestData) return <BatteryWarning className="h-6 w-6 text-muted-foreground" />;
@@ -41,11 +43,15 @@ export default function Home() {
   };
 
   const lastUpdated = latestData?.timestamp ? format(new Date(latestData.timestamp), "PP, hh:mm:ss a") : "N/A";
+  
+  const handleHighlight = (chart: string) => {
+    setHighlightedChart(highlightedChart === chart ? null : chart);
+  };
 
   return (
     <main className="flex min-h-screen flex-col bg-background">
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
-        <DashboardHeader />
+        <DashboardHeader loading={loading} lastUpdated={lastUpdated} />
         
         {error && (
           <Alert variant="destructive">
@@ -63,6 +69,7 @@ export default function Home() {
             icon={batteryStatusIcon()}
             description={latestData?.charging_source === 'renewable' ? 'Charging from renewables' : 'Charging from grid'}
             loading={loading}
+            onClick={() => handleHighlight('battery_efficiency')}
           />
           <MetricCard
             title="Efficiency"
@@ -71,6 +78,7 @@ export default function Home() {
             icon={efficiencyStatusIcon()}
             description="Overall system efficiency"
             loading={loading}
+            onClick={() => handleHighlight('battery_efficiency')}
           />
           <MetricCard
             title="Power Flow"
@@ -79,13 +87,14 @@ export default function Home() {
             icon={<ArrowDownUp className="h-6 w-6 text-primary" />}
             description="Current output power"
             loading={loading}
+            onClick={() => handleHighlight('power')}
           />
           <MetricCard
             title="Charging Source"
             value={latestData?.charging_source ? latestData.charging_source.charAt(0).toUpperCase() + latestData.charging_source.slice(1) : undefined}
             unit=""
             icon={chargingSourceIcon()}
-            description={`Last updated: ${loading ? '...' : lastUpdated}`}
+            description="Renewable vs. Grid power source"
             loading={loading}
           />
         </div>
@@ -100,6 +109,7 @@ export default function Home() {
                 { dataKey: "output_voltage", stroke: "hsl(var(--chart-2))", name: "Output Voltage", icon: Zap },
               ]}
               loading={loading}
+              isHighlighted={highlightedChart === 'power'}
             />
            <DataChart
               title="Current Flow"
@@ -110,6 +120,7 @@ export default function Home() {
                 { dataKey: "output_current", stroke: "hsl(var(--chart-2))", name: "Output Current", icon: Waves },
               ]}
               loading={loading}
+              isHighlighted={highlightedChart === 'power'}
             />
         </div>
         
@@ -123,6 +134,7 @@ export default function Home() {
                   { dataKey: "efficiency", stroke: "hsl(var(--chart-2))", name: "Efficiency (%)", icon: Gauge },
                 ]}
                 loading={loading}
+                isHighlighted={highlightedChart === 'battery_efficiency'}
               />
         </div>
 
