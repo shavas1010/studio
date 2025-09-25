@@ -9,7 +9,8 @@ import { DataChart } from "@/components/dashboard/data-chart";
 import { EfficiencyAnalyzer } from "@/components/dashboard/efficiency-analyzer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ArrowDownUp, Battery, BatteryCharging, BatteryWarning, Gauge, Grid, Leaf, TriangleAlert, Waves, Zap } from "lucide-react";
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
+import { MultiBatteryDashboard } from "@/components/dashboard/multi-battery-dashboard";
 
 export default function Home() {
   const { data, latestData, loading, error } = useMicrogridData();
@@ -60,6 +61,10 @@ export default function Home() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
+
+        <MultiBatteryDashboard />
+
+        <h2 className="text-2xl font-bold tracking-tight">Overall Microgrid Health</h2>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <MetricCard

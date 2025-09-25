@@ -10,3 +10,14 @@ export interface MicrogridData {
   battery_charge: number;
   efficiency: number;
 }
+
+export interface MultiBatteryData {
+  timestamp: number;
+  battery1: { soc: number; status: string };
+  battery2: { soc: number; status: string };
+  battery3: { soc: number; status: string };
+  faultDetected: boolean;
+  onMainPower: boolean;
+  isDumpingSolar: boolean;
+  activeBattery: number;
+}
