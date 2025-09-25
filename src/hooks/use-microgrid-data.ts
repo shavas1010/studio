@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -11,14 +12,18 @@ const generateMockData = (count: number): MicrogridData[] => {
   const now = new Date().getTime();
   for (let i = 0; i < count; i++) {
     const timestamp = now - (count - i) * 5 * 60 * 1000;
+    const isCharging = Math.random() > 0.2;
+    const inputCurrent = isCharging ? 1.1 + Math.random() * 0.4 : 0;
+    const source = Math.random() > 0.3 ? 'renewable' : 'grid';
+
     data.push({
       timestamp: timestamp,
       output_current: 1.2 + Math.random() * 0.5,
       output_voltage: 12.4 + Math.random() * 0.2,
-      input_current: 1.1 + Math.random() * 0.4,
+      input_current: inputCurrent,
       input_voltage: 13.0 + Math.random() * 0.5,
       battery_soc: 75 + Math.random() * 10,
-      charging_source: Math.random() > 0.3 ? 'renewable' : 'grid',
+      charging_source: inputCurrent > 0 ? source : 'grid',
       battery_charge: 1450 + Math.random() * 100,
       efficiency: 93 + Math.random() * 3,
     });
