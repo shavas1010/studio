@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ArrowDownUp, Battery, BatteryCharging, BatteryWarning, Gauge, Grid, Leaf, TriangleAlert, Waves, Zap } from "lucide-react";
 import { format, isValid } from "date-fns";
 import { MultiBatteryDashboard } from "@/components/dashboard/multi-battery-dashboard";
+import { PeriodicMonitorReminder } from "@/components/dashboard/periodic-monitor-reminder";
 
 export default function Home() {
   const { data, latestData, loading, error } = useMicrogridData();
@@ -53,6 +54,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col bg-background">
+      <PeriodicMonitorReminder />
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
         <DashboardHeader loading={loading} lastUpdated={lastUpdated} />
         
