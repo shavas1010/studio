@@ -31,7 +31,7 @@ const prompt = ai.definePrompt({
   output: {schema: EfficiencyAnalysisOutputSchema},
   prompt: `You are an expert in microgrid energy efficiency.
 
-Analyze the historical microgrid efficiency data provided and provide actionable suggestions on how to improve the microgrid's performance. Consider factors such as charging schedules, load distribution, and energy consumption patterns.
+Analyze the historical microgrid efficiency data provided and provide actionable suggestions on how to improve the microgrid's performance. Consider factors such as charging schedules, load distribution, and energy consumption patterns. Focus specifically on reducing energy waste and optimizing performance based on the data.
 
 Historical Efficiency Data: {{{historicalEfficiencyData}}} `,
 });

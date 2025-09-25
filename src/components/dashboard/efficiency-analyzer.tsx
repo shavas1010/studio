@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -79,7 +80,7 @@ export function EfficiencyAnalyzer({ historicalData, loading: dataLoading }: Eff
               <Lightbulb className="h-4 w-4" />
               <AlertTitle>Efficiency Suggestions</AlertTitle>
               <AlertDescription>
-                <div className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: suggestions }}></div>
+                <div className="whitespace-pre-wrap">{suggestions}</div>
               </AlertDescription>
             </Alert>
           )}

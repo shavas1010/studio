@@ -29,10 +29,21 @@ export default function Home() {
     return <Grid className="h-6 w-6 text-warning" />;
   };
 
+  const efficiencyStatusIcon = () => {
+    if (!latestData) return <Gauge className="h-6 w-6 text-muted-foreground" />;
+    if (latestData.efficiency < 90) {
+      return <Gauge className="h-6 w-6 text-warning" />;
+    }
+    if (latestData.efficiency > 95) {
+      return <Gauge className="h-6 w-6 text-success" />;
+    }
+    return <Gauge className="h-6 w-6 text-primary" />;
+  };
+
   const lastUpdated = latestData?.timestamp ? format(new Date(latestData.timestamp), "PP, hh:mm:ss a") : "N/A";
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="flex min-h-screen flex-col bg-background">
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
         <DashboardHeader />
         
@@ -57,7 +68,7 @@ export default function Home() {
             title="Efficiency"
             value={latestData?.efficiency !== undefined ? latestData.efficiency.toFixed(1) : undefined}
             unit="%"
-            icon={<Gauge className="h-6 w-6 text-primary" />}
+            icon={efficiencyStatusIcon()}
             description="Overall system efficiency"
             loading={loading}
           />
