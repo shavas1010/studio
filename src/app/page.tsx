@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useMicrogridData } from "@/hooks/use-microgrid-data";
@@ -6,7 +7,7 @@ import { MetricCard } from "@/components/dashboard/metric-card";
 import { DataChart } from "@/components/dashboard/data-chart";
 import { EfficiencyAnalyzer } from "@/components/dashboard/efficiency-analyzer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { BatteryCharging, BatteryWarning, Gauge, Grid, Leaf, TriangleAlert, ArrowDownUp } from "lucide-react";
+import { ArrowDownUp, Battery, BatteryCharging, BatteryWarning, Gauge, Grid, Leaf, TriangleAlert, Waves, Zap } from "lucide-react";
 import { format } from "date-fns";
 
 export default function Home() {
@@ -84,8 +85,8 @@ export default function Home() {
               description="Input and output voltage over the last few hours."
               data={data}
               lines={[
-                { dataKey: "input_voltage", stroke: "hsl(var(--chart-1))", name: "Input Voltage" },
-                { dataKey: "output_voltage", stroke: "hsl(var(--chart-2))", name: "Output Voltage" },
+                { dataKey: "input_voltage", stroke: "hsl(var(--chart-1))", name: "Input Voltage", icon: Zap },
+                { dataKey: "output_voltage", stroke: "hsl(var(--chart-2))", name: "Output Voltage", icon: Zap },
               ]}
               loading={loading}
             />
@@ -94,8 +95,8 @@ export default function Home() {
               description="Input and output current over the last few hours."
               data={data}
               lines={[
-                { dataKey: "input_current", stroke: "hsl(var(--chart-1))", name: "Input Current" },
-                { dataKey: "output_current", stroke: "hsl(var(--chart-2))", name: "Output Current" },
+                { dataKey: "input_current", stroke: "hsl(var(--chart-1))", name: "Input Current", icon: Waves },
+                { dataKey: "output_current", stroke: "hsl(var(--chart-2))", name: "Output Current", icon: Waves },
               ]}
               loading={loading}
             />
@@ -107,8 +108,8 @@ export default function Home() {
                 description="Battery State of Charge and system efficiency over time."
                 data={data}
                 lines={[
-                  { dataKey: "battery_soc", stroke: "hsl(var(--chart-1))", name: "Battery SOC (%)" },
-                  { dataKey: "efficiency", stroke: "hsl(var(--chart-2))", name: "Efficiency (%)" },
+                  { dataKey: "battery_soc", stroke: "hsl(var(--chart-1))", name: "Battery SOC (%)", icon: Battery },
+                  { dataKey: "efficiency", stroke: "hsl(var(--chart-2))", name: "Efficiency (%)", icon: Gauge },
                 ]}
                 loading={loading}
               />
