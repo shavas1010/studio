@@ -1,7 +1,7 @@
 
 "use client";
 
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 import { Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -64,7 +64,10 @@ export function DataChart({ data, title, description, lines, loading, isHighligh
                   <CartesianGrid vertical={false} strokeDasharray="3 3" />
                   <XAxis
                     dataKey="timestamp"
-                    tickFormatter={(value) => format(new Date(value), "HH:mm")}
+                    tickFormatter={(value) => {
+                      const date = new Date(value);
+                      return isValid(date) ? format(date, "HH:mm") : "";
+                    }}
                     tickLine={false}
                     axisLine={false}
                     stroke="hsl(var(--muted-foreground))"
@@ -80,7 +83,10 @@ export function DataChart({ data, title, description, lines, loading, isHighligh
                     cursor={false}
                     content={<ChartTooltipContent 
                       indicator="line"
-                      labelFormatter={(label) => format(new Date(label), "PP, hh:mm a")}
+                      labelFormatter={(label) => {
+                        const date = new Date(label);
+                        return isValid(date) ? format(date, "PP, hh:mm a") : "";
+                      }}
                     />}
                   />
                   <Legend />
