@@ -2,6 +2,7 @@
 import { Bolt, Wifi, WifiOff } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { isConfigPlaceholder } from '@/lib/firebase';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 interface DashboardHeaderProps {
   lastUpdated: string;
@@ -14,6 +15,7 @@ export function DashboardHeader({ lastUpdated, loading }: DashboardHeaderProps) 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b pb-4 mb-6">
       <div className="flex items-center gap-4">
+        <SidebarTrigger className="md:hidden"/>
         <div className="p-3 bg-primary/10 rounded-lg">
           <Bolt className="h-8 w-8 text-primary" />
         </div>

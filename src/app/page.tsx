@@ -8,10 +8,11 @@ import { MetricCard } from "@/components/dashboard/metric-card";
 import { DataChart } from "@/components/dashboard/data-chart";
 import { EfficiencyAnalyzer } from "@/components/dashboard/efficiency-analyzer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ArrowDownUp, Battery, BatteryCharging, BatteryWarning, Gauge, Grid, Leaf, TriangleAlert, Waves, Zap } from "lucide-react";
+import { ArrowDownUp, Battery, BatteryCharging, BatteryWarning, Gauge, Grid, Leaf, TriangleAlert, Waves, Zap, LayoutDashboard, Settings } from "lucide-react";
 import { format, isValid } from "date-fns";
 import { MultiBatteryDashboard } from "@/components/dashboard/multi-battery-dashboard";
 import { PeriodicMonitorReminder } from "@/components/dashboard/periodic-monitor-reminder";
+import { Sidebar, SidebarProvider, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset } from "@/components/ui/sidebar";
 
 export default function Home() {
   const { data, latestData, loading, error } = useMicrogridData();
@@ -53,103 +54,125 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-background">
-      <PeriodicMonitorReminder />
-      <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
-        <DashboardHeader loading={loading} lastUpdated={lastUpdated} />
-        
-        {error && (
-          <Alert variant="destructive">
-            <TriangleAlert className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+    <SidebarProvider>
+      <main className="flex min-h-screen">
+      <Sidebar>
+        <SidebarContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton isActive>
+                <LayoutDashboard />
+                Dashboard
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton>
+                <Settings />
+                Settings
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarContent>
+      </Sidebar>
+      <SidebarInset>
+        <PeriodicMonitorReminder />
+        <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
+          <DashboardHeader loading={loading} lastUpdated={lastUpdated} />
+          
+          {error && (
+            <Alert variant="destructive">
+              <TriangleAlert className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <MultiBatteryDashboard />
+          <MultiBatteryDashboard />
 
-        <h2 className="text-2xl font-bold tracking-tight">Overall Microgrid Health</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Overall Microgrid Health</h2>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <MetricCard
-            title="Battery SOC"
-            value={latestData?.battery_soc !== undefined ? latestData.battery_soc.toFixed(1) : undefined}
-            unit="%"
-            icon={batteryStatusIcon()}
-            description={latestData?.charging_source === 'renewable' ? 'Charging from renewables' : 'Charging from grid'}
-            loading={loading}
-            onClick={() => handleHighlight('battery_efficiency')}
-          />
-          <MetricCard
-            title="Efficiency"
-            value={latestData?.efficiency !== undefined ? latestData.efficiency.toFixed(1) : undefined}
-            unit="%"
-            icon={efficiencyStatusIcon()}
-            description="Overall system efficiency"
-            loading={loading}
-            onClick={() => handleHighlight('battery_efficiency')}
-          />
-          <MetricCard
-            title="Power Flow"
-            value={latestData ? ((latestData.output_voltage || 0) * (latestData.output_current || 0)).toFixed(1) : undefined}
-            unit="W"
-            icon={<ArrowDownUp className="h-6 w-6 text-primary" />}
-            description="Current output power"
-            loading={loading}
-            onClick={() => handleHighlight('power')}
-          />
-          <MetricCard
-            title="Charging Source"
-            value={latestData?.charging_source ? latestData.charging_source.charAt(0).toUpperCase() + latestData.charging_source.slice(1) : undefined}
-            unit=""
-            icon={chargingSourceIcon()}
-            description="Renewable vs. Grid power source"
-            loading={loading}
-          />
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2">
-           <DataChart
-              title="Voltage Levels"
-              description="Input and output voltage over the last few hours."
-              data={data}
-              lines={[
-                { dataKey: "input_voltage", stroke: "hsl(var(--chart-1))", name: "Input Voltage", icon: Zap },
-                { dataKey: "output_voltage", stroke: "hsl(var(--chart-2))", name: "Output Voltage", icon: Zap },
-              ]}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <MetricCard
+              title="Battery SOC"
+              value={latestData?.battery_soc !== undefined ? latestData.battery_soc.toFixed(1) : undefined}
+              unit="%"
+              icon={batteryStatusIcon()}
+              description={latestData?.charging_source === 'renewable' ? 'Charging from renewables' : 'Charging from grid'}
               loading={loading}
-              isHighlighted={highlightedChart === 'power'}
+              onClick={() => handleHighlight('battery_efficiency')}
             />
-           <DataChart
-              title="Current Flow"
-              description="Input and output current over the last few hours."
-              data={data}
-              lines={[
-                { dataKey: "input_current", stroke: "hsl(var(--chart-1))", name: "Input Current", icon: Waves },
-                { dataKey: "output_current", stroke: "hsl(var(--chart-2))", name: "Output Current", icon: Waves },
-              ]}
+            <MetricCard
+              title="Efficiency"
+              value={latestData?.efficiency !== undefined ? latestData.efficiency.toFixed(1) : undefined}
+              unit="%"
+              icon={efficiencyStatusIcon()}
+              description="Overall system efficiency"
               loading={loading}
-              isHighlighted={highlightedChart === 'power'}
+              onClick={() => handleHighlight('battery_efficiency')}
             />
-        </div>
-        
-         <div className="grid gap-4">
-             <DataChart
-                title="Battery & Efficiency"
-                description="Battery State of Charge and system efficiency over time."
+            <MetricCard
+              title="Power Flow"
+              value={latestData ? ((latestData.output_voltage || 0) * (latestData.output_current || 0)).toFixed(1) : undefined}
+              unit="W"
+              icon={<ArrowDownUp className="h-6 w-6 text-primary" />}
+              description="Current output power"
+              loading={loading}
+              onClick={() => handleHighlight('power')}
+            />
+            <MetricCard
+              title="Charging Source"
+              value={latestData?.charging_source ? latestData.charging_source.charAt(0).toUpperCase() + latestData.charging_source.slice(1) : undefined}
+              unit=""
+              icon={chargingSourceIcon()}
+              description="Renewable vs. Grid power source"
+              loading={loading}
+            />
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <DataChart
+                title="Voltage Levels"
+                description="Input and output voltage over the last few hours."
                 data={data}
                 lines={[
-                  { dataKey: "battery_soc", stroke: "hsl(var(--chart-1))", name: "Battery SOC (%)", icon: Battery },
-                  { dataKey: "efficiency", stroke: "hsl(var(--chart-2))", name: "Efficiency (%)", icon: Gauge },
+                  { dataKey: "input_voltage", stroke: "hsl(var(--chart-1))", name: "Input Voltage", icon: Zap },
+                  { dataKey: "output_voltage", stroke: "hsl(var(--chart-2))", name: "Output Voltage", icon: Zap },
                 ]}
                 loading={loading}
-                isHighlighted={highlightedChart === 'battery_efficiency'}
+                isHighlighted={highlightedChart === 'power'}
               />
+            <DataChart
+                title="Current Flow"
+                description="Input and output current over the last few hours."
+                data={data}
+                lines={[
+                  { dataKey: "input_current", stroke: "hsl(var(--chart-1))", name: "Input Current", icon: Waves },
+                  { dataKey: "output_current", stroke: "hsl(var(--chart-2))", name: "Output Current", icon: Waves },
+                ]}
+                loading={loading}
+                isHighlighted={highlightedChart === 'power'}
+              />
+          </div>
+          
+          <div className="grid gap-4">
+              <DataChart
+                  title="Battery & Efficiency"
+                  description="Battery State of Charge and system efficiency over time."
+                  data={data}
+                  lines={[
+                    { dataKey: "battery_soc", stroke: "hsl(var(--chart-1))", name: "Battery SOC (%)", icon: Battery },
+                    { dataKey: "efficiency", stroke: "hsl(var(--chart-2))", name: "Efficiency (%)", icon: Gauge },
+                  ]}
+                  loading={loading}
+                  isHighlighted={highlightedChart === 'battery_efficiency'}
+                />
+          </div>
+
+          <EfficiencyAnalyzer historicalData={data} loading={loading} />
+
         </div>
-
-        <EfficiencyAnalyzer historicalData={data} loading={loading} />
-
-      </div>
-    </main>
+      </SidebarInset>
+      </main>
+    </SidebarProvider>
   );
 }
